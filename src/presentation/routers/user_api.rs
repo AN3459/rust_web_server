@@ -1,20 +1,27 @@
 use axum::{
+    extract::Path,
     routing::{get, post},
     http::StatusCode,
     Json, Router,
 };
 use serde_derive::{Deserialize, Serialize};
 
-pub fn create_router() -> Router {
+pub fn create_user_api_router() -> Router {
     Router::new()
-        .route("/", get(root))
+        .route("/:id", get(get_user))
         .route("/users", post(create_user))
 }
 
-// basic handler that responds with a static string
-async fn root() -> &'static str {
-    tracing::debug!("root recive get request ");
-    "Hello, World!"
+async fn get_user(Path((id,)): Path<(String,)>) -> (StatusCode, Json<User>){
+    tracing::debug!("handler function:{},parameters:{}","get_user",id);
+
+    let user = User {
+        id,
+        username: String::from("user1"),
+    };
+
+    tracing::debug!("handler function:{},handle result:{:?}","get_user",user);
+    (StatusCode::OK, Json(user))
 }
 
 async fn create_user(
@@ -25,7 +32,7 @@ async fn create_user(
     tracing::debug!("create_user recive post request ");
     // insert your application logic here
     let user = User {
-        id: 1337,
+        id: String::from("1337"),
         username: payload.username,
     };
 
@@ -34,15 +41,13 @@ async fn create_user(
     (StatusCode::CREATED, Json(user))
 }
 
-// the input to our `create_user` handler
-#[derive(Deserialize)]
+#[derive(Debug,Deserialize)]
 struct CreateUser {
     username: String,
 }
 
-// the output to our `create_user` handler
-#[derive(Serialize)]
+#[derive(Debug,Serialize)]
 struct User {
-    id: u64,
+    id: String,
     username: String,
 }

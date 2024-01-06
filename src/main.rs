@@ -2,12 +2,12 @@ use axum;
 
 use tracing_subscriber::{layer::SubscriberExt, util::SubscriberInitExt};
 
-use presentation::routers::router::create_router;
+use presentation::routers;
 
 mod presentation;
 
 #[tokio::main]
-async fn main() {
+async fn main() { 
     // initialize tracing
     tracing_subscriber::registry()
         .with(
@@ -18,7 +18,7 @@ async fn main() {
         .init();
 
     // build our application with a route
-    let app = create_router();
+    let app = routers::create_router();
 
     // run our app with hyper, listening globally on port 3000
     let listener = tokio::net::TcpListener::bind("127.0.0.1:3000").await.unwrap();
