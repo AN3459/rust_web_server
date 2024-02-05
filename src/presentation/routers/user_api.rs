@@ -1,26 +1,24 @@
 use axum::{
     extract::Path,
-    routing::{get, post},
     http::StatusCode,
+    routing::{get, post},
     Json, Router,
 };
 use serde_derive::{Deserialize, Serialize};
 
+use crate::common::config::config::RUNNING_ENV;
+// use crate::common::database::connection::Pool;
+
 pub fn create_user_api_router() -> Router {
-    Router::new()
-        .route("/:id", get(get_user))
-        .route("/users", post(create_user))
+    Router::new().route("/:id", get(get_user)).route("/users", post(create_user))
 }
 
-async fn get_user(Path((id,)): Path<(String,)>) -> (StatusCode, Json<User>){
-    tracing::debug!("handler function:{},parameters:{}","get_user",id);
+async fn get_user(Path((id,)): Path<(String,)>) -> (StatusCode, Json<User>) {
+    tracing::debug!("handler function:{},parameters:{}", "get_user", id);
 
-    let user = User {
-        id,
-        username: String::from("user1"),
-    };
+    let user = User { id, username: String::from("user1"), config_info: RUNNING_ENV.to_string() };
 
-    tracing::debug!("handler function:{},handle result:{:?}","get_user",user);
+    tracing::debug!("handler function:{},handle result:{:?}", "get_user", user);
     (StatusCode::OK, Json(user))
 }
 
@@ -34,6 +32,7 @@ async fn create_user(
     let user = User {
         id: String::from("1337"),
         username: payload.username,
+        config_info: RUNNING_ENV.to_string(),
     };
 
     // this will be converted into a JSON response
@@ -41,13 +40,14 @@ async fn create_user(
     (StatusCode::CREATED, Json(user))
 }
 
-#[derive(Debug,Deserialize)]
+#[derive(Debug, Deserialize)]
 struct CreateUser {
     username: String,
 }
 
-#[derive(Debug,Serialize)]
+#[derive(Debug, Serialize)]
 struct User {
     id: String,
     username: String,
+    config_info: String,
 }

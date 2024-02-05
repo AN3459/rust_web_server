@@ -4,10 +4,11 @@ use tracing_subscriber::{layer::SubscriberExt, util::SubscriberInitExt};
 
 use presentation::routers;
 
+mod common;
 mod presentation;
 
 #[tokio::main]
-async fn main() { 
+async fn main() {
     // initialize tracing
     tracing_subscriber::registry()
         .with(
@@ -26,4 +27,3 @@ async fn main() {
 
     axum::serve(listener, app).await.unwrap();
 }
-

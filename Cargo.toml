@@ -4,6 +4,7 @@ version = "0.1.0"
 edition = "2021"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+# sqlx = { version = "0.7", features = ["runtime-tokio-rustls", "any", "postgres"] }
 
 [dependencies]
 axum = "*"
@@ -14,3 +15,9 @@ serde="*"
 serde_derive = "1.0"
 tracing = "0.1"
 tracing-subscriber = { version = "0.3", features = ["env-filter"] }
+lazy_static = "1.4"
+
+[dependencies.sea-orm]
+version = "0.12"
+features = ["sqlx-postgres", "runtime-tokio-rustls", "macros","debug-print"]
+default-features = false
