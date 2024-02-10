@@ -7,7 +7,7 @@ use axum::{
 use serde_derive::{Deserialize, Serialize};
 
 use crate::common::config::config::RUNNING_ENV;
-// use crate::common::database::connection::Pool;
+use crate::infrastructure::repository::user_repository::UserRepository;
 
 pub fn create_user_api_router() -> Router {
     Router::new().route("/:id", get(get_user)).route("/users", post(create_user))
@@ -15,7 +15,8 @@ pub fn create_user_api_router() -> Router {
 
 async fn get_user(Path((id,)): Path<(String,)>) -> (StatusCode, Json<User>) {
     tracing::debug!("handler function:{},parameters:{}", "get_user", id);
-
+    let user_repository = UserRepository::new().await;
+    let user_info = user_repository.find_post_by_id(1).await.ok();
     let user = User { id, username: String::from("user1"), config_info: RUNNING_ENV.to_string() };
 
     tracing::debug!("handler function:{},handle result:{:?}", "get_user", user);
