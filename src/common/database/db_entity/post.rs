@@ -4,15 +4,12 @@ use sea_orm::entity::prelude::*;
 use serde::{Deserialize, Serialize};
 
 #[derive(Clone, Debug, PartialEq, DeriveEntityModel, Eq, Serialize, Deserialize)]
-#[sea_orm(table_name = "users")]
+#[sea_orm(table_name = "post")]
 pub struct Model {
-    #[sea_orm(primary_key, auto_increment = false)]
-    pub id: String,
-    pub user_name: String,
-    pub account: Option<String>,
-    pub password: Option<String>,
-    pub created_at: DateTimeWithTimeZone,
-    pub updated_at: DateTimeWithTimeZone,
+    #[sea_orm(primary_key)]
+    pub id: i32,
+    pub title: String,
+    pub text: String,
 }
 
 #[derive(Copy, Clone, Debug, EnumIter, DeriveRelation)]

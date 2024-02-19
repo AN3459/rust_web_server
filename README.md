@@ -23,3 +23,25 @@ newline_style = "Auto" // 设置换行符风格，根据平台自动选择
 
 "editor.formatOnSave": true,
 "rustfmt.configPath": ".rustfmt.toml"
+
+# 迁移
+
+sea-orm-cli migrate init -d src/common/database/migration
+
+sea-orm-cli migrate generate -d src/common/database/migration user_table
+
+sea-orm-cli migrate -d src/common/database/migration up
+
+DATABASE_URL=postgresql://test:test@http://localhost/test cargo run --release -- migrations run
+
+## 设置环境变量
+
+export DATABASE_URL=postgresql://postgres:test@localhost:5432/postgres
+
+## 执行迁移
+
+sea-orm-cli migrate -d src/common/database/migration up
+
+## 生成实体
+
+sea-orm-cli generate entity -o src/common/database/db_entity --with-serde both --date-time-crate chrono

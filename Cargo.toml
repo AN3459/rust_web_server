@@ -3,6 +3,11 @@ name = "rust_web_server"
 version = "0.1.0"
 edition = "2021"
 
+[workspace]
+members = [
+    "src/common/database/migration",
+]
+
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 # sqlx = { version = "0.7", features = ["runtime-tokio-rustls", "any", "postgres"] }
 
@@ -16,8 +21,9 @@ serde_derive = "1.0"
 tracing = "0.1"
 tracing-subscriber = { version = "0.3", features = ["env-filter"] }
 lazy_static = "1.4"
+chrono = "0.4.34"
 
 [dependencies.sea-orm]
-version = "0.12"
-features = ["sqlx-postgres", "runtime-tokio-rustls", "macros","debug-print"]
+version = "0.12.14"
+features = ["sqlx-postgres", "runtime-tokio-rustls", "macros", "debug-print"]
 default-features = false
