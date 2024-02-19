@@ -20,8 +20,8 @@ impl MigrationTrait for Migration {
                     .col(ColumnDef::new(Users::UserName).string().not_null())
                     .col(ColumnDef::new(Users::Account).string())
                     .col(ColumnDef::new(Users::Password).string())
-                    .col(ColumnDef::new(Users::CreatedAt).timestamp_with_time_zone().not_null())
-                    .col(ColumnDef::new(Users::UpdatedAt).timestamp_with_time_zone().not_null())
+                    .col(ColumnDef::new(Users::CreatedAt).date_time().not_null())
+                    .col(ColumnDef::new(Users::UpdatedAt).date_time().not_null())
                     .to_owned(),
             )
             .await

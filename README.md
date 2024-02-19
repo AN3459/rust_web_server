@@ -44,4 +44,7 @@ sea-orm-cli migrate -d src/common/database/migration up
 
 ## 生成实体
 
-sea-orm-cli generate entity -o src/common/database/db_entity --with-serde both --date-time-crate chrono
+sea-orm-cli generate entity -o src/common/database/db_entity --with-serde both
+
+为了让生成的实体支持日期类型 uuid 类型 json 类型 需要在 sea-orm 的 feature 中添加以下内容
+features = ["sqlx-postgres", "runtime-tokio-rustls", "macros", "debug-print","with-chrono","with-json","with-uuid"]

@@ -25,5 +25,5 @@ chrono = "0.4.34"
 
 [dependencies.sea-orm]
 version = "0.12.14"
-features = ["sqlx-postgres", "runtime-tokio-rustls", "macros", "debug-print"]
+features = ["sqlx-postgres", "runtime-tokio-rustls", "macros", "debug-print","with-chrono","with-json","with-uuid"]
 default-features = false
