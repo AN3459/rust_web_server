@@ -4,7 +4,6 @@ use crate::common::database::connection::DbConnection;
 use crate::common::database::db_entity::users;
 use crate::common::database::db_entity::prelude::Users;
 pub struct UserRepository {
-    prefix: String,
     state: AppState,
 }
 
@@ -17,7 +16,7 @@ impl UserRepository {
     pub async fn new() -> UserRepository {
         let connection_result = DbConnection::new().await.expect("Database connection failed");
 
-        UserRepository { prefix: String::from("REPO"), state: AppState { conn: connection_result } }
+        UserRepository { state: AppState { conn: connection_result } }
     }
 
     // pub async fn read_one() -> User{
