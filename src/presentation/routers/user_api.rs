@@ -16,8 +16,8 @@ pub fn create_user_api_router() -> Router {
 async fn get_user(Path((id,)): Path<(String,)>) -> (StatusCode, Json<User>) {
     tracing::debug!("handler function:{},parameters:{}", "get_user", id);
     let user_repository = UserRepository::new().await;
-    let user_info = user_repository.find_post_by_id(1).await.unwrap();
-    let user = User { id, username: String::from("user1"), config_info: user_info.unwrap().title };
+    let user_info = user_repository.find_user_by_id(String::from("123")).await.unwrap();
+    let user = User { id, username: String::from("user1"), config_info: user_info.unwrap().open_id };
 
     tracing::debug!("handler function:{},handle result:{:?}", "get_user", user);
     (StatusCode::OK, Json(user))

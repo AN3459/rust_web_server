@@ -1,7 +1,8 @@
 use sea_orm::{DatabaseConnection, DbErr, EntityTrait};
 // use serde_derive::{Deserialize, Serialize};
 use crate::common::database::connection::DbConnection;
-use crate::common::database::db_entity::{post, post::Entity as Post};
+use crate::common::database::db_entity::users;
+use crate::common::database::db_entity::prelude::Users;
 pub struct UserRepository {
     prefix: String,
     state: AppState,
@@ -23,8 +24,8 @@ impl UserRepository {
     //     User {id:"123".to_string(),username:"123".to_string(),config_info:"123".to_string()}
     // }
 
-    pub async fn find_post_by_id(&self, id: i32) -> Result<Option<post::Model>, DbErr> {
-        Post::find_by_id(id).one(&self.state.conn).await
+    pub async fn find_user_by_id(&self, id: String) -> Result<Option<users::Model>, DbErr> {
+        Users::find_by_id(id).one(&self.state.conn).await
     }
 }
 
