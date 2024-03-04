@@ -48,3 +48,34 @@ sea-orm-cli generate entity -o src/common/database/db_entity --with-serde both
 
 为了让生成的实体支持日期类型 uuid 类型 json 类型 需要在 sea-orm 的 feature 中添加以下内容
 features = ["sqlx-postgres", "runtime-tokio-rustls", "macros", "debug-print","with-chrono","with-json","with-uuid"]
+
+## neo4j
+
+1.  docker pull neo4j
+
+2.  > docker run -d --name container_name \ //-d 表示容器后台运行 --name 指定容器名字
+        -p 7474:7474 -p 7687:7687 \  //映射容器的端口号到宿主机的端口号
+        -v /home/neo4j/data:/data \  //把容器内的数据目录挂载到宿主机的对应目录下
+        -v /home/neo4j/logs:/logs \  //挂载日志目录
+        -v /home/neo4j/conf:/var/lib/neo4j/conf   //挂载配置目录
+        -v /home/neo4j/import:/var/lib/neo4j/import \  //挂载数据导入目录
+        --env NEO4J_AUTH=neo4j/password \  //设定数据库的名字的访问密码
+        neo4j //指定使用的镜像
+
+docker run -d --name neo4j_test -p 7474:7474 -p 7687:7687 -v /home/neo4j/data:/data -v /home/neo4j/logs:/logs -v /home/neo4j/conf:/var/lib/neo4j/conf -v /home/neo4j/import:/var/lib/neo4j/import --env NEO4J_AUTH=neo4j/password neo4j
+
+## gremlim
+
+1.首次启动
+
+docker run --name janusgraph-default janusgraph/janusgraph:latest
+
+docker run --rm --link janusgraph-default:janusgraph -e GREMLIN_REMOTE_HOSTS=janusgraph \
+ -it janusgraph/janusgraph:latest ./bin/gremlin.sh
+
+2.第二次启动
+
+docker start janusgraph-default
+
+docker run --rm --link janusgraph-default:janusgraph -e GREMLIN_REMOTE_HOSTS=janusgraph \
+ -it janusgraph/janusgraph:latest ./bin/gremlin.sh

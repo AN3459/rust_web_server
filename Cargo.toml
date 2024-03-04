@@ -22,6 +22,8 @@ tracing = "0.1"
 tracing-subscriber = { version = "0.3", features = ["env-filter"] }
 lazy_static = "1.4"
 chrono = "0.4.34"
+gremlin-client = { version = "0.4.0", features = ["tokio-runtime"] }
+tokio-stream = "0.1.14"
 
 [dependencies.sea-orm]
 version = "0.12.14"

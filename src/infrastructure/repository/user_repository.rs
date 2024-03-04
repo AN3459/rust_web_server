@@ -3,6 +3,9 @@ use sea_orm::{DatabaseConnection, DbErr, EntityTrait};
 use crate::common::database::connection::DbConnection;
 use crate::common::database::db_entity::users;
 use crate::common::database::db_entity::prelude::Users;
+use gremlin_client::{aio::GremlinClient, Vertex};
+use tokio_stream::StreamExt;
+
 pub struct UserRepository {
     state: AppState,
 }
@@ -25,6 +28,16 @@ impl UserRepository {
 
     pub async fn find_user_by_id(&self, id: String) -> Result<Option<users::Model>, DbErr> {
         Users::find_by_id(id).one(&self.state.conn).await
+    }
+
+    pub async fn gremlin_test()-> Result<(), Box<dyn std::error::Error>> {
+        let client = GremlinClient::connect("localhost").await?;
+        let results = client.execute("g.V(param)", &[("param", &1)]).await?
+            .filter_map(Result::ok)
+            .map(|f| f.take::<Vertex>())
+            .collect::<Result<Vec<Vertex>, _>>().await?;
+        println!("{:?}", results);
+        Ok(())
     }
 }
 
