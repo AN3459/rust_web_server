@@ -1,0 +1,42 @@
+version: "3"
+services:
+  rust_web_server:
+    depends_on:
+      - rust_db
+    image: rust:latest
+    container_name: rust_web_server
+    working_dir: /usr/app
+    command: sleep infinity
+    environment:
+      RUNNING_ENV: "dev"
+      PORT: "3000"
+      DATABASE_URL: "postgresql://test:test@rust_db:5432/test"
+      POSTGRES_CONNECTIONTIMEOUT: "5000"
+      POSTGRES_MAXQUERYEXECUTIONTIME: "10000"
+    volumes:
+      - ../app:/usr/app
+    ports:
+      - "23000:3000"
+    networks:
+      - rust_net
+
+  rust_db:
+    container_name: rust_db
+    image: postgres:latest
+    restart: always
+    environment:
+      POSTGRES_USER: "test"
+      POSTGRES_PASSWORD: "test"
+      POSTGRES_DB: "test"
+      GDATA: "/var/lib/postgresql/data/pgdata"
+    volumes:
+      - ../docker/postgres:/var/lib/postgresql/data
+    ports:
+      - "25432:5432"
+    networks:
+      - rust_net
+
+networks:
+  rust_net:
+    name: rust_net
+    driver: bridge

@@ -1,0 +1,22 @@
+{
+  "name": "RustWebSystem",
+  "dockerComposeFile": "docker-compose.yml",
+  "service": "rust_web_server",
+  "workspaceFolder": "/usr/app",
+  "customizations": {
+    "vscode": {
+      "settings": {
+        // "[typescript]": {
+        //   "editor.defaultFormatter": "esbenp.prettier-vscode"
+        // },
+        // "editor.formatOnSave": true,
+        // "editor.codeActionsOnSave": {
+        //   "source.fixAll.eslint": true
+        // }
+      },
+      "extensions": ["rust-lang.rust-analyzer"]
+    }
+  },
+  "postCreateCommand": "cargo install sea-orm-cli; rustup component add rustfmt"
+  // "remoteUser": "rust"
+}

@@ -62,8 +62,8 @@ lazy_static! {
 // db
 lazy_static! {
     pub static ref POSTGRES_HOST: String = get_env_var_or_default(
-        "POSTGRES_URL",
-        "postgresql://postgres:test@localhost:5432/postgres"
+        "DATABASE_URL",
+        "postgresql://test:test@rust_db:5432/test"
     );
     pub static ref POSTGRES_PORT: u16 =
         get_env_var_or_default("PORT", "3000").parse().expect(PARSE_ERROR_MSG);

@@ -79,3 +79,8 @@ docker start janusgraph-default
 
 docker run --rm --link janusgraph-default:janusgraph -e GREMLIN_REMOTE_HOSTS=janusgraph \
  -it janusgraph/janusgraph:latest ./bin/gremlin.sh
+
+
+## 容器中需要执行的指令
+cargo install sea-orm-cli
+rustup component add rustfmt

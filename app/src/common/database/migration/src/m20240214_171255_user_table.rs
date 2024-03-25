@@ -11,11 +11,11 @@ impl MigrationTrait for Migration {
                 Table::create()
                     .table(Users::Table)
                     .if_not_exists()
-                    .col(ColumnDef::new(Users::Id).string().not_null().primary_key())
+                    .col(ColumnDef::new(Users::Id).string().not_null().primary_key().extra("DEFAULT gen_random_uuid()"))
                     .col(ColumnDef::new(Users::OpenId).string().not_null())
                     .col(ColumnDef::new(Users::SessionKey).string())
-                    .col(ColumnDef::new(Users::CreatedAt).date_time().not_null())
-                    .col(ColumnDef::new(Users::UpdatedAt).date_time().not_null())
+                    .col(ColumnDef::new(Users::CreatedAt).date_time().extra("DEFAULT now()"))
+                    .col(ColumnDef::new(Users::UpdatedAt).date_time().extra("DEFAULT now()"))
                     .to_owned(),
             )
             .await
