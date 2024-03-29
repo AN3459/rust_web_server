@@ -1,10 +1,10 @@
-use sea_orm::{DatabaseConnection, DbErr, EntityTrait};
+use sea_orm::{ActiveModelTrait, ActiveValue::{NotSet,Set}, DatabaseConnection, DbErr, EntityTrait};
 // use serde_derive::{Deserialize, Serialize};
 use crate::common::database::connection::DbConnection;
 use crate::common::database::db_entity::users;
 use crate::common::database::db_entity::prelude::Users;
 // use gremlin_client::{aio::GremlinClient, Vertex};
-use tokio_stream::StreamExt;
+// use tokio_stream::StreamExt;
 
 pub struct UserRepository {
     state: AppState,
@@ -39,9 +39,15 @@ impl UserRepository {
     //     println!("{:?}", results);
     //     Ok(results)
     // }
-    // pub async fn save(&self)-> Result<(), DbErr>{
-        
-    // }
+    pub async fn save(&self,open_id:String)-> Result<users::ActiveModel, DbErr>{
+        users::ActiveModel {
+            id:NotSet,
+            open_id: Set(open_id.to_owned()),
+            ..Default::default()
+        }
+        .save(&self.state.conn)
+        .await
+    }
 }
 
 // #[derive(Debug, Deserialize)]

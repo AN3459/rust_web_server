@@ -6,7 +6,7 @@ use axum::{
 };
 use serde_derive::{Deserialize, Serialize};
 
-use crate::common::config::config::RUNNING_ENV;
+use crate::{common::config::config::RUNNING_ENV, infrastructure::repository::user_repository};
 use crate::infrastructure::repository::user_repository::UserRepository;
 
 pub fn create_user_api_router() -> Router {
@@ -16,7 +16,7 @@ pub fn create_user_api_router() -> Router {
 async fn get_user(Path((id,)): Path<(String,)>) -> (StatusCode, Json<User>) {
     tracing::debug!("handler function:{},parameters:{}", "get_user", id);
     let user_repository = UserRepository::new().await;
-    let user_info = user_repository.find_user_by_id(String::from("123")).await.unwrap();
+    let user_info = user_repository.find_user_by_id(id.clone()).await.unwrap();
     let user =
         User { id, username: String::from("user1"), config_info: user_info.unwrap().open_id };
     tracing::debug!("handler function:{},handle result:{:?}", "get_user", user);
@@ -32,10 +32,11 @@ async fn create_user(
     // insert your application logic here
     let user = User {
         id: String::from("1337"),
-        username: payload.username,
+        username: payload.open_id.clone(),
         config_info: RUNNING_ENV.to_string(),
     };
-
+    let user_repository = UserRepository::new().await;
+    let _ = user_repository.save(payload.open_id.clone()).await;
     // this will be converted into a JSON response
     // with a status code of `201 Created`
     (StatusCode::CREATED, Json(user))
@@ -43,7 +44,7 @@ async fn create_user(
 
 #[derive(Debug, Deserialize)]
 struct CreateUser {
-    username: String,
+    open_id: String,
 }
 
 #[derive(Debug, Serialize)]
