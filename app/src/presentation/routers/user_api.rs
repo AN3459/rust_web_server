@@ -15,8 +15,7 @@ pub fn create_user_api_router() -> Router {
 
 async fn get_user(Path((id,)): Path<(String,)>) -> (StatusCode, Json<User>) {
     tracing::debug!("handler function:{},parameters:{}", "get_user", id);
-    let user_repository = UserRepository::new().await;
-    let user_info = user_repository.find_user_by_id(id.clone()).await.unwrap();
+    let user_info = UserRepository::new().await.find_user_by_id(id.clone()).await.unwrap();
     let user =
         User { id, username: String::from("user1"), config_info: user_info.unwrap().open_id };
     tracing::debug!("handler function:{},handle result:{:?}", "get_user", user);
@@ -35,8 +34,8 @@ async fn create_user(
         username: payload.open_id.clone(),
         config_info: RUNNING_ENV.to_string(),
     };
-    let user_repository = UserRepository::new().await;
-    let _ = user_repository.save(payload.open_id.clone()).await;
+    let _ = UserRepository::new().await.save(payload.open_id.clone()).await;
+    // = user_repository.save(payload.open_id.clone()).await;
     // this will be converted into a JSON response
     // with a status code of `201 Created`
     (StatusCode::CREATED, Json(user))
