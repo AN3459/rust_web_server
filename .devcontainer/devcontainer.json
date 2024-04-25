@@ -6,15 +6,12 @@
   "customizations": {
     "vscode": {
       "settings": {
-        // "[typescript]": {
-        //   "editor.defaultFormatter": "esbenp.prettier-vscode"
-        // },
-        // "editor.formatOnSave": true,
-        // "editor.codeActionsOnSave": {
-        //   "source.fixAll.eslint": true
-        // }
+        "[rust]": {
+          "editor.defaultFormatter": "rust-lang.rust-analyzer"
+        },
+        "editor.formatOnSave": true
       },
-      "extensions": ["rust-lang.rust-analyzer"]
+      "extensions": ["rust-lang.rust-analyzer", "vadimcn.vscode-lldb"]
     }
   },
   "postCreateCommand": "cargo install sea-orm-cli; rustup component add rustfmt"
